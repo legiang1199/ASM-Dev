@@ -1,0 +1,72 @@
+<h1>Hi</h1>
+<div class="container-fluid" >
+  <table class="table table-hover table-dark" id="table_2">
+    <a href="/admin/createTrainer" class="btn btn-success">Create Trainer</a>
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Password</th>
+        <th scope="col">Role</th>
+        <th scope="col">View</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% trainerAccounts.forEach(trainerAccount=> { %>
+      <tr>
+        <th scope="row"><%= trainerAccount.id%></th>
+
+        <td><%= trainerAccount.username%></td>
+
+        <td><%= trainerAccount.password%></td>
+
+        <td><%= trainerAccount.Role.name%></td>
+
+        <td><a href="/admin/viewTrainer/<%= trainerAccount.userId%>" class="btn btn-outline-primary">View Details</a></td>
+
+        <td><a href="/admin/changePass/<%= trainerAccount.id%>" class="btn btn-outline-warning">Update</a></td>
+
+        <td><a href="/admin/deleteTrainer/<%= trainerAccount.id%>/<%= trainerAccount.userId%>" class="btn btn-outline-danger">Delete</a>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <table class="table table-hover table-dark">
+    <a href="/admin/createStaff" class="btn btn-success">Create Staff</a>
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Password</th>
+        <th scope="col">Role</th>
+        <th scope="col">View</th>
+        <th scope="col">Change Password</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% staffAccounts.forEach(staffAccount=> { %>
+      <tr>
+        <th scope="row"><%= staffAccount.id%></th>
+
+        <td><%= staffAccount.username%></td>
+
+        <td><%= staffAccount.password%></td>
+
+        <td><%= staffAccount.Role.name%></td>
+
+        <td><a href="/admin/viewStaff/<%= staffAccount.userId%>" class="btn btn-outline-primary">View Details</a></td>
+
+        <td><a href="/admin/changePass/<%= staffAccount.id%>" class="btn btn-outline-warning">Change Password</a></td>
+
+        <td><a href="/admin/deleteStaff/<%= staffAccount.id%>/<%= staffAccount.userId%>" class="btn btn-outline-danger">Delete</a>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

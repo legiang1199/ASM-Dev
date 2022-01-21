@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <table class="table" id="table_1">
+    <a href="/staff/createTrainee" class="btn btn-success">Create trainee</a>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Password</th>
+        <th scope="col">Role</th>
+        <th scope="col">View</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% traineeAccounts.forEach(traineeAccount=> { %>
+        <tr>
+          <th scope="row">
+            <%= traineeAccount.id%>
+          </th>
+          <td>
+            <%= traineeAccount.username%>
+          </td>
+          <td>
+            <%= traineeAccount.password%>
+          </td>
+          <td>
+            <%= traineeAccount.Role.name%>
+          </td>
+          <td>
+            <a href="/staff/viewTrainee/<%= traineeAccount.userId%>" class="btn btn-primary">View details</a>
+          </td>
+          <td>
+            <a href="/staff/updateTrainee/<%= traineeAccount.userId%>" class="btn btn-warning">Update</a>
+          </td>
+          <td>
+            <a href="/staff/deleteTrainee/<%= traineeAccount.id%>/<%= traineeAccount.userId%>" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <table class="table" id="table_2">
+    <a href="/staff/createCourseCategory" class="btn btn-success">Create course category</a>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% categories.forEach(category => { %>
+        <tr>
+          <th scope="row">
+            <%= category.id%>
+          </th>
+          <td>
+            <%= category.name%>
+          </td>
+          <td>
+            <%= category.description%>
+          </td>
+          <td>
+            <a href="/staff/updateCourseCategory/<%= category.id%>" class="btn btn-warning">Update</a>
+          </td>
+          <td>
+            <a href="/staff/deleteCourseCategory/<%= category.id%>" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <table class="table" id="table_3">
+    <a href="/staff/createCourse" class="btn btn-success">Create course</a>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% courses.forEach(course => { %>
+        <tr>
+          <th scope="row">
+            <%= course.id %>
+          </th>
+          <td>
+            <%= course.name %>
+          </td>
+          <td>
+            <%= course.description %>
+          </td>
+          
+          <td>
+            <a href="/staff/updateCourse/<%= course.id%>" class="btn btn-warning">Update</a>
+          </td>
+          <td>
+            <a href="/staff/deleteCourse/<%= course.id%>" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+
+</div>
