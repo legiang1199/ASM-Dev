@@ -8,21 +8,23 @@ const create = async (data) => {
 
 const findAllCourses = async () => {
   const categories = await Course.findAll({include: CourseCategory});
+  console.log("🚀 ~ file: courseService.js ~ line 11 ~ findAllCourses ~ categories", categories)
   return categories;
 }
 
 const findById = async (id) => {
-  const trainee = await Trainee.findOne({
+  const course = await Course.findOne({
     where: {
       id
-    }
+    },
+    include: CourseCategory
   })
 
-  return trainee;
+  return course;
 }
 
 const update = async (id, data) => {
-  const updatedTrainee = await Trainee.update(data, {
+  const updatedTrainee = await Course.update(data, {
     where: {
       id
     }
@@ -39,10 +41,27 @@ const deleteById = async (id) => {
   });
 }
 
+const findUnassignedCoures = async ( selectedCourseId ) => {
+  try {
+    const courses = await Course.findAll({
+      where: {
+        [database.db.Sequelize.Op.not]: {
+          id: selectedCourseId
+        }
+      }
+    });
+    return courses;
+  } catch (error) {
+    console.log("🚀 ~ file: courseService.js ~ line 55 ~ findUnassignedCoures ~ error", error)
+    return error;
+  }
+}
+
 module.exports = {
   create,
   findAllCourses,
   findById,
   update,
-  deleteById
+  deleteById,
+  findUnassignedCoures
 }

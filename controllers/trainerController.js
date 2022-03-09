@@ -3,6 +3,8 @@ const sequelize = database.db.sequelize;
 const RoleService = require('../services/roleService');
 const TrainerService = require('../services/trainerService');
 const AccountService = require('../services/accountService');
+const CourseService = require('../services/courseService');
+const TrainerCourseService = require('../services/trainerCourseService');
 
 const renderCreateView = async (req, res) => {
   const trainerRole = await RoleService.findRoleByName('trainer');
@@ -74,9 +76,92 @@ const destroy = async(req, res) => {
   res.redirect('/admin'); 
 }
 
+const assignTrainer = async(req, res, next) => {
+  try {
+    const trainers = await TrainerService.findAllTrainers();
+    const courses = await CourseService.findAllCourses();
+
+    return res.render('templates/master', { 
+      title: 'Assign trainer page',
+      content: '../assignTrainer_view/create',
+      trainers,
+      courses
+    }); // ctrl + alt + l
+  } catch (error) {
+    console.log("🚀 ~ file: trainerController.js ~ line 83 ~ assignTrainer ~ error", error)
+    next(error)
+  }
+}
+
+const addTrainerCourse = async (req, res, next) => {
+  // return res.send(req.body);
+  try {
+    const { trainerId, courseId } = req.body;
+    const trainerCourse = await TrainerCourseService.assignTrainerIntoCourse(trainerId, courseId);
+    
+    if(!trainerCourse) res.redirect('/staff/assignTrainer');
+
+    res.redirect('/staff');
+
+  } catch (error) {
+    console.log("🚀 ~ file: trainerController.js ~ line 106 ~ addTrainerCourse ~ error", error)
+    res.redirect('/staff/assignTrainer');
+  }
+}
+
+const deleteTrainerCourse = async(req, res, next) => {
+  try {
+    const { trainerId, courseId } = req.params;
+
+    const deleted = await TrainerCourseService.removeAssignedTrainer(trainerId, courseId);
+    console.log("🚀 ~ file: trainerController.js ~ line 117 ~ deleteTrainerCourse ~ deleted", deleted)
+
+    return res.redirect('/staff');
+  } catch (error) {
+    console.log("🚀 ~ file: trainerController.js ~ line 120 ~ deleteTrainerCourse ~ error", error)
+    return res.redirect('/staff');
+  }
+}
+
+const renderUpdateTrainerCourse = async(req, res, next) => {
+  const { trainerId, courseId } = req.params;
+   
+  const selectedTrainer = await TrainerService.findTrainerById(trainerId);
+  const selectedCourse = await CourseService.findById(courseId);
+  const unassignedTrainers = await TrainerService.findUnassignedTrainers(selectedTrainer.id);
+  const unassignedCourses = await CourseService.findUnassignedCoures(selectedCourse.id);
+
+  // return res.send(unassignedCourses);
+  
+
+  res.render('templates/master', { 
+    title: 'Update assign trainer page',
+    content: '../assignTrainer_view/update',
+    selectedTrainer,
+    selectedCourse,
+    unassignedTrainers,
+    unassignedCourses
+  });
+}
+
+const updateTrainerCourse = async (req, res, next) => {
+  const { trainerId, courseId } = req.body;
+  const { selectedTrainerId, selectedCourseId } = req.query;
+  // return res.send(req.query);
+  // return res.send(req.body)
+  const trainerCourse = 
+    await TrainerCourseService.updateAssignedTrainer(trainerId, courseId, selectedTrainerId, selectedCourseId);
+  
+  res.redirect('/staff');
+}
 module.exports = {
   renderCreateView,
   create,
   view,
-  destroy
+  destroy,
+  assignTrainer,
+  addTrainerCourse,
+  deleteTrainerCourse,
+  updateTrainerCourse,
+  renderUpdateTrainerCourse
 }
